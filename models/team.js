@@ -1,17 +1,24 @@
 export default (sequelize, DataTypes) => {
-  const Team = sequelize.define('team', {
-    name: {
-      type: DataTypes.STRING,
-      unique: true,
+  const Team = sequelize.define(
+    'team',
+    {
+      name: {
+        type: DataTypes.STRING,
+        unique: true,
+      },
     },
-  });
+    { underscored: true },
+  );
 
   Team.associate = (models) => {
-    models.Team.belongsToMany(models.User, {
+    Team.belongsToMany(models.User, {
       through: 'member',
-      foreignKey: 'teamId',
+      foreignKey: {
+        name: 'teamId',
+        field: 'team_id',
+      },
     });
-    models.Team.belongsTo(models.User, {
+    Team.belongsTo(models.User, {
       foreignKey: 'owner',
     });
   };
